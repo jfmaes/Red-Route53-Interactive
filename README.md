@@ -19,6 +19,9 @@ Please register the domains (and create their respective zones) you'd like to us
 This role is intented to be used in combination with my Red-EC2 role (https://github.com/jfmaes/Red-EC2). 
 <br>However, it can be used separately as well (as all good Ansible roles should be). In which case this role will need an inventory file, or be preceeded by another role that creates a dynamic inventory. In this case you'll need to override the default xx_host_identifier variables in this role. 
 
+## Caveat
+This role is **interactive**, it will require your input in order to create the A records.
+
 ## Role variables
 
 ### AWS specific variables
