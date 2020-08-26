@@ -1,0 +1,71 @@
+- name: Check for additional info for C2 DNS...
+  pause:
+    prompt: "Please provide an A record for C2 {{ ansible_loop.index }} "
+  loop: "{{ groups[C2_host_identifier] }}"
+  loop_control:
+     extended: yes
+  register: c2_response
+  when:  groups[C2_host_identifier] |length > 0
+
+- name: Check for additional info for Redirectors DNS...
+  pause:
+    prompt: "Please provide an A record for Redirector {{ ansible_loop.index }} "
+  loop: "{{ groups[redir_host_identifier] }}"
+  loop_control:
+     extended: yes
+  register: redir_response
+  when:  groups[redir_host_identifier] |length > 0
+
+- name: Check for additional info for RedELK DNS...
+  pause:
+    prompt: "Please provide an A record for RedELK {{ ansible_loop.index }} "
+  loop: "{{ groups[redelk_host_identifier] }}"
+  loop_control:
+     extended: yes
+  register: redelk_response
+  when:  groups[redelk_host_identifier] |length > 0
+      
+- name: "Setting up C2(s) DNS record(s)"
+  route53:
+   aws_access_key: "{{ aws_access_key }}"
+   aws_secret_key: "{{ aws_secret_key }}"
+   state: present
+   zone: "{{ item.user_input | regex_search(\"\\.(.*)$\") |replace(\".\",\"\",count=1) }}"
+   record: "{{ item.user_input }}"
+   type: A
+   value: "{{ groups[C2_host_identifier][ansible_loop.index0] }}"
+   wait: yes
+   overwrite: "{{ overwrite }}"
+  loop: "{{ c2_response.results }}"
+  loop_control:
+     extended: yes
+
+- name: "Setting up Redirector(s) DNS record(s)"
+  route53:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: present
+    zone: "{{ item.user_input | regex_search(\"\\.(.*)$\") |replace(\".\",\"\",count=1) }}"
+    record: "{{ item.user_input }}"
+    type: A
+    value: "{{ groups[redir_host_identifier][ansible_loop.index0] }}"
+    wait: yes
+    overwrite: "{{ overwrite }}"
+  loop: "{{ redir_response.results }}"
+  loop_control:
+     extended: yes
+
+- name: "Setting up RedELK(s) DNS record(s)"
+  route53:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: present
+    zone: "{{ item.user_input | regex_search(\"\\.(.*)$\") |replace(\".\",\"\",count=1) }}"
+    record: "{{ item.user_input }}"
+    type: A
+    value: "{{ groups[redelk_host_identifier][ansible_loop.index0] }}"
+    wait: yes
+    overwrite: "{{ overwrite }}"
+  loop: "{{ redelk_response.results }}"
+  loop_control:
+     extended: yes

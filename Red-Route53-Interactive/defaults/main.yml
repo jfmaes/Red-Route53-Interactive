@@ -1,0 +1,4 @@
+C2_host_identifier: C2
+redir_host_identifier: Redirector
+redelk_host_identifier: RedELK
+overwrite: no
