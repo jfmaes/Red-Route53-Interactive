@@ -16,7 +16,8 @@ This role does **NOT** automatically generate DNS zones for you.
 Please register the domains (and create their respective zones) you'd like to use in Route53 manually.
 
 ## Usage
-This role is intented to be used in combination with my Red-EC2 role (https://github.com/jfmaes/Red-EC2) however, it can be used sepperatly as well (as all good Ansible roles should be). In which case this role will need an inventory file, or be preceeded by another role that creates a dynamic inventory. In this case you'll need to override the default xx_host_identifier variables in this role. 
+This role is intented to be used in combination with my Red-EC2 role (https://github.com/jfmaes/Red-EC2). 
+<br>However, it can be used sepperatly as well (as all good Ansible roles should be). In which case this role will need an inventory file, or be preceeded by another role that creates a dynamic inventory. In this case you'll need to override the default xx_host_identifier variables in this role. 
 
 ## Role variables
 
